@@ -1,0 +1,1 @@
+import {auth} from '@/auth';import {processPending} from '@/jobs/process';export async function POST(){const s=await auth();if(!s)return Response.json({error:'Մուտք գործեք։'},{status:401});await processPending();return Response.json({ok:true})}

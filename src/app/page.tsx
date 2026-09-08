@@ -1,0 +1,1 @@
+import {auth} from '@/auth';import {redirect} from 'next/navigation';export default async function Home(){const s=await auth();redirect(!s?'/login':s.user.role==='ADMIN'?'/admin':s.user.role==='LDM'?'/ldm':'/teacher')}

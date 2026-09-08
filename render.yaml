@@ -1,0 +1,47 @@
+databases:
+  - name: krtakan-ai-db
+    plan: starter
+
+services:
+  - type: web
+    name: krtakan-ai-web
+    runtime: docker
+    healthCheckPath: /api/health
+    preDeployCommand: npx prisma migrate deploy && npm run db:bootstrap
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: krtakan-ai-db
+          property: connectionString
+      - key: AUTH_SECRET
+        generateValue: true
+      - key: AUTH_TRUST_HOST
+        value: "true"
+      - key: MOCK_EXTERNAL_SERVICES
+        value: "true"
+      - key: AI_CONFIDENCE_THRESHOLD
+        value: "0.85"
+      - key: BOOTSTRAP_ADMIN_EMAIL
+        sync: false
+      - key: BOOTSTRAP_ADMIN_PASSWORD
+        sync: false
+      - key: BOOTSTRAP_ADMIN_FIRST_NAME
+        value: Admin
+      - key: BOOTSTRAP_ADMIN_LAST_NAME
+        value: System
+
+  - type: worker
+    name: krtakan-ai-worker
+    runtime: docker
+    dockerCommand: npm run worker
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: krtakan-ai-db
+          property: connectionString
+      - key: MOCK_EXTERNAL_SERVICES
+        value: "true"
+      - key: AI_CONFIDENCE_THRESHOLD
+        value: "0.85"
+      - key: JOB_CONCURRENCY
+        value: "2"
