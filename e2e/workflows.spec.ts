@@ -1,0 +1,1 @@
+import {test,expect} from '@playwright/test';test('teacher and LDM workflows are reachable',async({page})=>{await page.goto('/login');await expect(page.getByRole('heading',{name:'Բարի վերադարձ'})).toBeVisible();});

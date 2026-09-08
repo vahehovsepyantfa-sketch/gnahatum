@@ -1,0 +1,1 @@
+import './globals.css';export const metadata={title:'Կրթական AI վերլուծություն',description:'Աշակերտական աշխատանքների անվտանգ վերլուծություն'};export default function Layout({children}:{children:React.ReactNode}){return <html lang="hy"><body>{children}</body></html>}
